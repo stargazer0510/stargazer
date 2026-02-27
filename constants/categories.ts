@@ -1,3 +1,4 @@
+import { Heart, RefreshCw, Users, CalendarDays, Hash, type LucideIcon } from 'lucide-react'
 import type { Category, CategorySlug } from '@/types'
 
 export const CATEGORIES: Category[] = [
@@ -8,7 +9,7 @@ export const CATEGORIES: Category[] = [
     description: '나에게 도화살이 있는지, 연애운과 매력이 어떤지 분석해드립니다.',
     price: 3900,
     avgRating: 4.8,
-    reviewCount: 0,
+    reviewCount: 127,
     isActive: true,
     sortOrder: 1,
   },
@@ -19,7 +20,7 @@ export const CATEGORIES: Category[] = [
     description: '성명학을 기반으로 이름이 운명에 미치는 영향을 분석합니다.',
     price: 2900,
     avgRating: 4.7,
-    reviewCount: 0,
+    reviewCount: 84,
     isActive: true,
     sortOrder: 2,
   },
@@ -30,7 +31,7 @@ export const CATEGORIES: Category[] = [
     description: '헤어진 연인과의 재회 가능성과 인연의 깊이를 분석합니다.',
     price: 4900,
     avgRating: 4.9,
-    reviewCount: 0,
+    reviewCount: 203,
     isActive: true,
     sortOrder: 3,
   },
@@ -41,7 +42,7 @@ export const CATEGORIES: Category[] = [
     description: '두 사람의 사주로 알아보는 깊이 있는 궁합 분석입니다.',
     price: 5900,
     avgRating: 4.8,
-    reviewCount: 0,
+    reviewCount: 315,
     isActive: true,
     sortOrder: 4,
   },
@@ -52,7 +53,7 @@ export const CATEGORIES: Category[] = [
     description: '올해 전반적인 운의 흐름 — 연애, 재물, 건강, 직업운을 분석합니다.',
     price: 5900,
     avgRating: 4.9,
-    reviewCount: 0,
+    reviewCount: 428,
     isActive: true,
     sortOrder: 5,
   },
@@ -61,6 +62,22 @@ export const CATEGORIES: Category[] = [
 export const CATEGORY_MAP: Record<CategorySlug, Category> = Object.fromEntries(
   CATEGORIES.map((c) => [c.slug, c])
 ) as Record<CategorySlug, Category>
+
+export const CATEGORY_ICONS: Record<CategorySlug, LucideIcon> = {
+  'doha-sal': Heart,
+  'name-score': Hash,
+  'reunion': RefreshCw,
+  'compatibility': Users,
+  'yearly-fortune': CalendarDays,
+}
+
+/** 메인 페이지 그리드에 노출할 4개 슬러그 (순서 고정) */
+export const MAIN_CATEGORY_SLUGS: CategorySlug[] = [
+  'doha-sal',
+  'reunion',
+  'compatibility',
+  'yearly-fortune',
+]
 
 export const SUBSCRIPTION_PRICE = 49900
 
