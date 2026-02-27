@@ -2,8 +2,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafaf9;
-  --foreground: #1a1a2e;
+  --background: #fdfcff;
+  --foreground: #0f0a1e;
   --muted: #6b7280;
   --border: #e5e7eb;
   --purple-soft: #7c3aed;
@@ -38,6 +38,12 @@ body {
 /* 이모지 렌더링 방지 — 텍스트 이모지 금지 정책 */
 .no-emoji {
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+/* 텍스트 선택 색상 */
+::selection {
+  background-color: #ede9fe;
+  color: #4c1d95;
 }
 
 /* 스크롤바 커스텀 */

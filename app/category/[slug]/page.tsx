@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { ChevronLeft, Star } from 'lucide-react'
-import { CATEGORY_MAP, CATEGORY_ICONS } from '@/constants/categories'
+import { ChevronLeft, Star, Info } from 'lucide-react'
+import { CATEGORY_MAP, CATEGORY_ICONS, CATEGORY_HOOKS } from '@/constants/categories'
 import { formatPrice } from '@/lib/utils'
 import type { CategorySlug } from '@/types'
 import SajuInputForm from '@/components/saju/SajuInputForm'
@@ -17,8 +17,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!category) return {}
   return {
     title: category.name,
-    description: category.description,
+    description: CATEGORY_HOOKS[slug as CategorySlug] ?? category.description,
   }
+}
+
+const CATEGORY_NOTICES: Partial<Record<CategorySlug, string[]>> = {
+  compatibility: ['두 사람의 생년월일을 모두 정확히 입력해야 분석이 가능합니다.'],
 }
 
 export default async function CategoryPage({ params }: Props) {
@@ -28,51 +32,59 @@ export default async function CategoryPage({ params }: Props) {
   if (!category || !category.isActive) notFound()
 
   const Icon = CATEGORY_ICONS[slug as CategorySlug]
+  const hook = CATEGORY_HOOKS[slug as CategorySlug]
+  const notices = CATEGORY_NOTICES[slug as CategorySlug] ?? []
+
+  const baseNotices = [
+    '생년월일과 성별을 정확히 입력할수록 정밀한 분석이 가능합니다.',
+    '무료 맛보기는 입력 즉시 확인할 수 있습니다.',
+    'AI 프리미엄 분석은 결제 후 Claude AI가 실시간으로 생성합니다.',
+  ]
 
   return (
-    <div className="min-h-screen bg-gray-50/60">
-      {/* 상단 헤더 */}
-      <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
+    <div className="min-h-screen bg-[#fdfcff]">
+
+      {/* 상단 네비 바 */}
+      <div className="bg-white/90 backdrop-blur-md border-b border-gray-100/80 sticky top-14 z-10">
+        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-2">
           <Link
             href="/"
-            className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors text-gray-500 hover:text-gray-700"
-            aria-label="홈으로 돌아가기"
+            className="p-1.5 rounded-xl hover:bg-gray-100 transition-colors text-gray-400 hover:text-gray-700 shrink-0"
+            aria-label="홈으로"
           >
             <ChevronLeft className="w-5 h-5" strokeWidth={2} />
           </Link>
-          <h1 className="font-semibold text-gray-900 text-sm">{category.name}</h1>
+          <span className="text-xs text-gray-400">홈</span>
+          <span className="text-xs text-gray-300">/</span>
+          <span className="text-xs font-semibold text-gray-700 truncate">{category.name}</span>
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
-        {/* 카테고리 소개 카드 */}
-        <div className="bg-gradient-to-br from-violet-50 to-indigo-50 border border-violet-100 rounded-2xl p-6">
-          <div className="flex items-start gap-4">
-            <div className="shrink-0 p-3 bg-white rounded-xl shadow-sm">
-              <Icon className="w-6 h-6 text-violet-600" strokeWidth={1.8} />
+      <div className="max-w-2xl mx-auto px-4 py-8 space-y-5">
+
+        {/* 카테고리 소개 */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-700 rounded-3xl p-6 text-white shadow-xl shadow-violet-500/20">
+          {/* 배경 장식 */}
+          <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" aria-hidden />
+
+          <div className="relative flex items-start gap-4">
+            <div className="shrink-0 p-3 bg-white/15 rounded-2xl backdrop-blur-sm">
+              <Icon className="w-6 h-6 text-white" strokeWidth={1.8} />
             </div>
             <div className="flex-1">
-              <h2 className="text-lg font-bold text-gray-900 mb-1">{category.name}</h2>
-              <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                {category.description}
-              </p>
-
-              {/* 가격 + 별점 */}
+              <h1 className="text-xl font-black mb-1 leading-tight">{category.name}</h1>
+              {hook && (
+                <p className="text-violet-100 text-sm leading-relaxed mb-4 font-medium">
+                  {hook}
+                </p>
+              )}
               <div className="flex flex-wrap items-center gap-3">
-                <span className="text-base font-bold text-violet-700">
-                  {formatPrice(category.price)}
-                </span>
-                <span className="w-px h-4 bg-violet-200" aria-hidden />
+                <span className="text-lg font-black">{formatPrice(category.price)}</span>
+                <span className="w-px h-4 bg-violet-400/60" aria-hidden />
                 <div className="flex items-center gap-1 text-sm">
-                  <Star
-                    className="w-4 h-4 fill-amber-400 text-amber-400"
-                    strokeWidth={1}
-                  />
-                  <span className="font-semibold text-gray-800">
-                    {category.avgRating.toFixed(1)}
-                  </span>
-                  <span className="text-gray-400 text-xs">
+                  <Star className="w-4 h-4 fill-amber-300 text-amber-300" strokeWidth={1} />
+                  <span className="font-bold">{category.avgRating.toFixed(1)}</span>
+                  <span className="text-violet-200 text-xs">
                     ({category.reviewCount.toLocaleString()}개 리뷰)
                   </span>
                 </div>
@@ -82,32 +94,31 @@ export default async function CategoryPage({ params }: Props) {
         </div>
 
         {/* 이용 안내 */}
-        <div className="bg-white border border-gray-100 rounded-2xl p-5">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3">이용 안내</h3>
+        <div className="bg-white rounded-3xl border border-gray-100 p-5 shadow-sm">
+          <div className="flex items-center gap-2 mb-3">
+            <Info className="w-4 h-4 text-violet-500 shrink-0" strokeWidth={1.8} />
+            <h2 className="text-sm font-bold text-gray-700">이용 안내</h2>
+          </div>
           <ul className="space-y-2">
-            {[
-              '생년월일과 성별을 정확히 입력할수록 정밀한 분석이 가능합니다.',
-              '무료 맛보기는 즉시 확인할 수 있습니다.',
-              'AI 프리미엄 분석은 결제 후 실시간으로 생성됩니다.',
-              ...(slug === 'compatibility'
-                ? ['두 사람의 정보를 모두 입력해야 궁합 분석이 가능합니다.']
-                : []),
-            ].map((item) => (
-              <li key={item} className="flex items-start gap-2 text-sm text-gray-500">
-                <span className="shrink-0 mt-0.5 w-1.5 h-1.5 rounded-full bg-violet-400" aria-hidden />
+            {[...baseNotices, ...notices].map((item) => (
+              <li key={item} className="flex items-start gap-2 text-sm text-gray-500 leading-relaxed">
+                <span className="shrink-0 mt-1.5 w-1 h-1 rounded-full bg-violet-400" aria-hidden />
                 {item}
               </li>
             ))}
           </ul>
         </div>
 
-        {/* 입력 폼 */}
+        {/* 입력 폼 영역 */}
         <div>
-          <h3 className="text-sm font-semibold text-gray-700 mb-3 px-1">
-            {slug === 'compatibility' ? '두 사람의 정보를 입력해주세요' : '생년월일 정보를 입력해주세요'}
-          </h3>
+          <h2 className="text-sm font-bold text-gray-700 mb-3 px-1">
+            {slug === 'compatibility'
+              ? '두 사람의 정보를 입력해주세요'
+              : '생년월일 정보를 입력해주세요'}
+          </h2>
           <SajuInputForm category={category} />
         </div>
+
       </div>
     </div>
   )

@@ -5,14 +5,14 @@ import Footer from '@/components/layout/Footer'
 
 export const metadata: Metadata = {
   title: {
-    default: '사주비서 — AI 사주 분석 서비스',
-    template: '%s | 사주비서',
+    default: '사주가자 — AI 사주 분석 서비스',
+    template: '%s | 사주가자',
   },
-  description: '생년월일로 알아보는 나의 운명. AI 기반 정밀 사주 분석 — 도화살, 이름 점수, 재회 가능성, 궁합, 올해 운세.',
-  keywords: ['사주', '사주팔자', '운세', '궁합', '도화살', 'AI 사주', '사주 분석'],
+  description: '생년월일이 말해주는 당신의 운명. AI 기반 정밀 사주 분석 — 도화살, 재회 가능성, 궁합, 올해 운세.',
+  keywords: ['사주', '사주팔자', '운세', '궁합', '도화살', 'AI 사주', '사주 분석', '재회'],
   openGraph: {
-    title: '사주비서 — AI 사주 분석 서비스',
-    description: '생년월일로 알아보는 나의 운명. AI 기반 정밀 사주 분석.',
+    title: '사주가자 — AI 사주 분석 서비스',
+    description: '생년월일이 말해주는 당신의 운명. AI 기반 정밀 사주 분석.',
     locale: 'ko_KR',
     type: 'website',
   },
@@ -31,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="min-h-screen flex flex-col bg-[#fafaf9] text-gray-900 antialiased">
+      <body className="min-h-screen flex flex-col bg-[#fdfcff] text-gray-900 antialiased">
         <Header />
         <main className="flex-1">
           {children}

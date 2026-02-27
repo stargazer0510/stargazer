@@ -196,9 +196,14 @@ function PersonFields({ label, data, errors, onChange, showLabel = false }: Pers
           {errors.birthTime && (
             <p className="mt-1.5 text-xs text-red-500">{errors.birthTime}</p>
           )}
-          <p className="mt-1.5 text-xs text-gray-400">
-            정확한 시간을 모르면 &apos;모름&apos;을 선택해도 됩니다.
-          </p>
+          <div className="mt-2 bg-amber-50/80 border border-amber-100 rounded-xl px-3 py-2 space-y-0.5">
+            <p className="text-xs text-amber-700 font-semibold">한국 표준시(KST) 기준 안내</p>
+            <p className="text-xs text-amber-600/90 leading-relaxed">
+              표시된 시각은 KST(UTC+9) 기준입니다. 전통 시각보다 30분 더한 값으로,
+              예를 들어 오전 12시 출생이면 오시(11:30~13:30)를 선택하세요.
+            </p>
+            <p className="text-xs text-amber-500">시간을 모르면 &apos;모름&apos;을 선택해도 됩니다.</p>
+          </div>
         </div>
       </div>
     </div>
