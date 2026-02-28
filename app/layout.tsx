@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import { createClient } from '@/lib/supabase/server'
 
 export const metadata: Metadata = {
   title: {
@@ -24,15 +25,18 @@ export const viewport: Viewport = {
   maximumScale: 5,
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
   return (
     <html lang="ko">
       <body className="min-h-screen flex flex-col bg-[#fdfcff] text-gray-900 antialiased">
-        <Header />
+        <Header isLoggedIn={!!user} />
         <main className="flex-1">
           {children}
         </main>

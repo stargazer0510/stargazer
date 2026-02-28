@@ -11,7 +11,11 @@ const NAV_LINKS = [
   { href: '/category/yearly-fortune', label: '올해 운세' },
 ]
 
-export default function Header() {
+interface HeaderProps {
+  isLoggedIn: boolean
+}
+
+export default function Header({ isLoggedIn }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -41,20 +45,32 @@ export default function Header() {
 
         {/* 우측 버튼 */}
         <div className="hidden md:flex items-center gap-2">
-          <Link
-            href="/auth/login"
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-500 hover:text-violet-700 font-medium transition-colors rounded-lg hover:bg-violet-50"
-          >
-            <LogIn className="w-4 h-4" strokeWidth={1.8} />
-            로그인
-          </Link>
-          <Link
-            href="/auth/signup"
-            className="flex items-center gap-1.5 px-4 py-1.5 text-sm bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-lg transition-colors shadow-sm"
-          >
-            <User className="w-4 h-4" strokeWidth={1.8} />
-            회원가입
-          </Link>
+          {isLoggedIn ? (
+            <Link
+              href="/mypage"
+              className="flex items-center gap-1.5 px-4 py-1.5 text-sm bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-lg transition-colors shadow-sm"
+            >
+              <User className="w-4 h-4" strokeWidth={1.8} />
+              마이페이지
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/auth/login"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-500 hover:text-violet-700 font-medium transition-colors rounded-lg hover:bg-violet-50"
+              >
+                <LogIn className="w-4 h-4" strokeWidth={1.8} />
+                로그인
+              </Link>
+              <Link
+                href="/auth/signup"
+                className="flex items-center gap-1.5 px-4 py-1.5 text-sm bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-lg transition-colors shadow-sm"
+              >
+                <User className="w-4 h-4" strokeWidth={1.8} />
+                회원가입
+              </Link>
+            </>
+          )}
         </div>
 
         {/* 모바일 햄버거 */}
@@ -86,22 +102,35 @@ export default function Header() {
               </Link>
             ))}
             <div className="border-t border-gray-100 mt-2 pt-2 flex flex-col gap-1">
-              <Link
-                href="/auth/login"
-                className="py-2.5 px-3 text-sm text-gray-700 hover:bg-gray-50 rounded-xl font-medium transition-colors flex items-center gap-2"
-                onClick={() => setMenuOpen(false)}
-              >
-                <LogIn className="w-4 h-4" strokeWidth={1.8} />
-                로그인
-              </Link>
-              <Link
-                href="/auth/signup"
-                className="py-2.5 px-3 text-sm bg-violet-600 text-white hover:bg-violet-700 rounded-xl font-semibold transition-colors flex items-center gap-2"
-                onClick={() => setMenuOpen(false)}
-              >
-                <User className="w-4 h-4" strokeWidth={1.8} />
-                회원가입
-              </Link>
+              {isLoggedIn ? (
+                <Link
+                  href="/mypage"
+                  className="py-2.5 px-3 text-sm bg-violet-600 text-white hover:bg-violet-700 rounded-xl font-semibold transition-colors flex items-center gap-2"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <User className="w-4 h-4" strokeWidth={1.8} />
+                  마이페이지
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    href="/auth/login"
+                    className="py-2.5 px-3 text-sm text-gray-700 hover:bg-gray-50 rounded-xl font-medium transition-colors flex items-center gap-2"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <LogIn className="w-4 h-4" strokeWidth={1.8} />
+                    로그인
+                  </Link>
+                  <Link
+                    href="/auth/signup"
+                    className="py-2.5 px-3 text-sm bg-violet-600 text-white hover:bg-violet-700 rounded-xl font-semibold transition-colors flex items-center gap-2"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <User className="w-4 h-4" strokeWidth={1.8} />
+                    회원가입
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
         </div>
